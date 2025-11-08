@@ -23,7 +23,18 @@ const __dirname = path.dirname(__filename);
 // Serve frontend folder as static
 app.use(express.static(path.join(__dirname, "../vueAppFrontend")));
 
+// Logger middleware
+app.use((req, res, next) => {
+    const now = new Date().toISOString();
+    console.log(`[${now}] ${req.method} ${req.url} from ${req.ip}`);
+    next();
+});
+
 // Routes
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "../vueAppFrontend/index.html"));
+});
+
 app.get("/lessons", async (req, res) => {
     try {
         const db = req.app.locals.db;
