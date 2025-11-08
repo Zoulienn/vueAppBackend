@@ -3,6 +3,9 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { connectToDb } from "./database.js";
+import path from "path";
+import { fileURLToPath } from "url";
+
 
 dotenv.config();
 
@@ -13,11 +16,14 @@ const PORT = process.env.PORT;
 app.use(express.json());
 app.use(cors());
 
-// Routes
-app.get("/", (req, res) => {
-    res.send("Server and database are running fine!");
-});
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve frontend folder as static
+app.use(express.static(path.join(__dirname, "../vueAppFrontend")));
+
+// Routes
 app.get("/lessons", async (req, res) => {
     try {
         const db = req.app.locals.db;
