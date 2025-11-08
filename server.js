@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import { connectToDb } from "./database.js";
 import path from "path";
 import { fileURLToPath } from "url";
-
+import fs from "fs";
 
 dotenv.config();
 
@@ -33,6 +33,19 @@ app.use((req, res, next) => {
 // Routes
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "../vueAppFrontend/index.html"));
+});
+
+// Serve lesson images safely
+app.get("/images/:filename", (req, res) => {
+    const filePath = path.join(__dirname, "images", req.params.filename);
+
+    fs.access(filePath, fs.constants.F_OK, (err) => {
+        if (err) {
+            console.error(`Image not found: ${req.params.filename}`);
+            return res.status(404).json({ error: "Image not found" });
+        }
+        res.sendFile(filePath);
+    });
 });
 
 app.get("/lessons", async (req, res) => {
