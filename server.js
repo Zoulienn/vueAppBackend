@@ -18,6 +18,21 @@ app.get("/", (req, res) => {
     res.send("Server and database are running fine!");
 });
 
+app.get("/lessons", async (req, res) => {
+    try {
+        const db = req.app.locals.db;
+        const lessons = await db.collection("Lessons")
+            .find()
+            .toArray();
+
+        res.json(lessons);
+    } catch (error) {
+        console.error("Error fetching lessons:", error);
+        res.status(500).send("Error fetching lessons");
+    }
+});
+
+
 // Start server after DB connection
 async function startServer() {
     try {
