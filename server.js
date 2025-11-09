@@ -1,4 +1,3 @@
-// server.js
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -15,7 +14,6 @@ const PORT = process.env.PORT;
 // Middleware
 app.use(express.json());
 app.use(cors());
-
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -62,6 +60,35 @@ app.get("/lessons", async (req, res) => {
     }
 });
 
+app.post("/orders", async (req, res) => {
+    try {
+        const db = req.app.locals.db;
+        const { name, phone, lessonIDs, spaces, items } = req.body;
+
+        // Basic validation
+        if (!name || !phone || !Array.isArray(lessonIDs) || lessonIDs.length === 0) {
+            return res.status(400).json({ error: "Invalid order data" });
+        }
+
+        // Insert the order into Orders collection
+        const result = await db.collection("Orders").insertOne({
+            name,
+            phone,
+            lessonIDs,
+            spaces,
+            items,
+            createdAt: new Date(),
+        });
+
+        res.status(201).json({
+            message: "Order created successfully",
+            orderId: result.insertedId,
+        });
+    } catch (error) {
+        console.error("Error saving order:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
 
 // Start server after DB connection
 async function startServer() {
