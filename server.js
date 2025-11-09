@@ -90,6 +90,35 @@ app.post("/orders", async (req, res) => {
     }
 });
 
+app.put("/lessons/:id", async (req, res) => {
+    try {
+        const db = req.app.locals.db;
+        const lessonId = Number(req.params.id);
+        const updateData = req.body;
+
+        if (!updateData || Object.keys(updateData).length === 0) {
+            return res.status(400).json({ error: "No update data provided" });
+        }
+
+        const result = await db.collection("Lessons").updateOne(
+            { id: lessonId },
+            { $set: updateData }
+        );
+
+        if (result.matchedCount === 0) {
+            return res.status(404).json({ error: "Lesson not found" });
+        }
+
+        res.json({
+            message: "Lesson updated successfully",
+            updatedCount: result.modifiedCount,
+        });
+    } catch (error) {
+        console.error("Error updating lesson:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
 // Start server after DB connection
 async function startServer() {
     try {
