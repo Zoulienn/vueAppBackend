@@ -60,6 +60,33 @@ app.get("/lessons", async (req, res) => {
     }
 });
 
+// (/search?q=term)
+app.get('/search', async (req, res) => {
+    try {
+        const db = req.app.locals.db;
+        const q = (req.query.q || '').trim();
+
+        // helper to escape regex special characters from user input
+        const escapeRegex = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+        let filter = {};
+        if (q.length > 0) {
+            const safe = escapeRegex(q);
+            // case-insensitive partial match
+            const regex = new RegExp(safe, 'i');
+
+            // search subject and location fields
+            filter = { $or: [ { subject: regex }, { location: regex } ] };
+        }
+
+        const results = await db.collection('Lessons').find(filter).toArray();
+        res.json(results);
+    } catch (err) {
+        console.error('Error in search:', err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 app.post("/orders", async (req, res) => {
     try {
         const db = req.app.locals.db;
