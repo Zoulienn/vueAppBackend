@@ -18,8 +18,7 @@ app.use(cors());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Serve frontend folder as static
-app.use(express.static(path.join(__dirname, "../vueAppFrontend")));
+
 
 // Logger middleware
 app.use((req, res, next) => {
@@ -29,9 +28,6 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "../vueAppFrontend/index.html"));
-});
 
 // Serve lesson images safely
 app.get("/images/:filename", (req, res) => {
