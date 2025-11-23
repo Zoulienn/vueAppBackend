@@ -135,10 +135,10 @@ app.post("/orders", async (req, res) => {
     }
 });
 
-app.put("/lessons/:id", async (req, res) => {
+app.put("/lessons/:subject", async (req, res) => {
     try {
         const db = req.app.locals.db;
-        const lessonId = Number(req.params.id);
+        const lessonSubject = req.params.subject;
         const updateData = req.body;
 
         if (!updateData || Object.keys(updateData).length === 0) {
@@ -146,7 +146,7 @@ app.put("/lessons/:id", async (req, res) => {
         }
 
         const result = await db.collection("Lessons").updateOne(
-            { id: lessonId },
+            { subject: lessonSubject },
             { $set: updateData }
         );
 
