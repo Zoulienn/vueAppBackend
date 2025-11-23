@@ -4,83 +4,83 @@
     "location": "La Marie",
     "price": 1000,
     "spaces": 5,
-    "image": "https://github.com/Zoulienn/vueAppFrontend/raw/main/images/violin.png"
+    "image": "https://vueappbackend.onrender.com/images/violin.png"
   },
   {
     "subject": "Piano",
     "location": "Port-Louis",
     "price": 1200,
     "spaces": 5,
-    "image": "https://github.com/Zoulienn/vueAppFrontend/raw/main/images/grand-piano.png"
+    "image": "https://vueappbackend.onrender.com/images/grand-piano.png"
   },
   {
     "subject": "Guitar",
     "location": "Grand Baie",
     "price": 900,
     "spaces": 5,
-    "image": "https://github.com/Zoulienn/vueAppFrontend/raw/main/images/guitar.png"
+    "image": "https://vueappbackend.onrender.com/images/guitar.png"
   },
   {
     "subject": "Cymbals",
     "location": "La Marie",
     "price": 1500,
     "spaces": 5,
-    "image": "https://github.com/Zoulienn/vueAppFrontend/raw/main/images/cymbals.png"
+    "image": "https://vueappbackend.onrender.com/images/cymbals.png"
   },
   {
     "subject": "Bassoon",
     "location": "Flic-en-Flac",
     "price": 2000,
     "spaces": 5,
-    "image": "https://github.com/Zoulienn/vueAppFrontend/raw/main/images/bassoon.png"
+    "image": "https://vueappbackend.onrender.com/images/bassoon.png"
   },
   {
     "subject": "Trumpet",
     "location": "Port-Louis",
     "price": 1100,
     "spaces": 5,
-    "image": "https://github.com/Zoulienn/vueAppFrontend/raw/main/images/trumpet.png"
+    "image": "https://vueappbackend.onrender.com/images/trumpet.png"
   },
   {
     "subject": "French Horn",
     "location": "Phoenix",
     "price": 1800,
     "spaces": 5,
-    "image": "https://github.com/Zoulienn/vueAppFrontend/raw/main/images/french-horn.png"
+    "image": "https://vueappbackend.onrender.com/images/french-horn.png"
   },
   {
     "subject": "Trombone",
     "location": "Tamarin",
     "price": 1300,
     "spaces": 5,
-    "image": "https://github.com/Zoulienn/vueAppFrontend/raw/main/images/trombone.png"
+    "image": "https://vueappbackend.onrender.com/images/trombone.png"
   },
   {
     "subject": "Harp",
     "location": "Phoenix",
     "price": 2500,
     "spaces": 5,
-    "image": "https://github.com/Zoulienn/vueAppFrontend/raw/main/images/harp.png"
+    "image": "https://vueappbackend.onrender.com/images/harp.png"
   },
   {
     "subject": "Clarinet",
     "location": "Curepipe",
     "price": 1400,
     "spaces": 5,
-    "image": "https://github.com/Zoulienn/vueAppFrontend/raw/main/images/clarinet.png"
+    "image": "https://vueappbackend.onrender.com/images/clarinet.png"
   },
   {
     "subject": "Timpani",
     "location": "Curepipe",
     "price": 2200,
     "spaces": 5,
-    "image": "https://github.com/Zoulienn/vueAppFrontend/raw/main/images/timpani.png"
+    "image": "https://vueappbackend.onrender.com/images/timpani.png"
   },
   {
     "subject": "Xylophone",
     "location": "Port-Louis",
     "price": 1600,
     "spaces": 5,
-    "image": "https://github.com/Zoulienn/vueAppFrontend/raw/main/images/xylophone.png"
+    "image": "https://vueappbackend.onrender.com/images/xylophone.png"
   }
 ]
