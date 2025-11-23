@@ -1,3 +1,4 @@
+// imports
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -6,29 +7,30 @@ import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
 
+// Load environment variables
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT;
 
-// Middleware
-app.use(express.json());
-app.use(cors());
+// Middleware setup
+app.use(express.json()); // Allow JSON request bodies
+app.use(cors());         // Enable Cross-Origin Resource Sharing
 
+// Helpers to handle file paths for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
-
-// Logger middleware
+// Logger middleware: prints each request to the console
 app.use((req, res, next) => {
     const now = new Date().toISOString();
     console.log(`[${now}] ${req.method} ${req.url} from ${req.ip}`);
     next();
 });
 
-// Image existence check middleware
+// Middleware that checks if an image exists before serving it
 const imageCheckMiddleware = (req, res, next) => {
+    // Only run for /images/... routes
     if (!req.path.startsWith("/images/")) {
         return next();
     }
@@ -36,6 +38,7 @@ const imageCheckMiddleware = (req, res, next) => {
     const filename = req.path.replace("/images/", "");
     const filePath = path.join(__dirname, "images", filename);
 
+    // Check if the image file exists
     fs.access(filePath, fs.constants.F_OK, (err) => {
         if (err) {
             console.error(`Image not found: ${filename}`);
@@ -48,9 +51,11 @@ const imageCheckMiddleware = (req, res, next) => {
 };
 
 app.use(imageCheckMiddleware);
+
+// Serve images from the /images folder
 app.use("/images", express.static(path.join(__dirname, "images")));
 
-// Routes
+// GET /lessons → fetch all lessons
 app.get("/lessons", async (req, res) => {
     try {
         const db = req.app.locals.db;
@@ -65,16 +70,17 @@ app.get("/lessons", async (req, res) => {
     }
 });
 
-// (/search?q=term)
+// GET /search?q=... → search lessons by subject or location
 app.get('/search', async (req, res) => {
     try {
         const db = req.app.locals.db;
         const q = (req.query.q || '').trim();
 
-        // helper to escape regex special characters from user input
+        // Escape any special regex characters to avoid errors
         const escapeRegex = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
         let filter = {};
+        // If search term exists, build a regex filter
         if (q.length > 0) {
             const safe = escapeRegex(q);
             // case-insensitive partial match
@@ -92,7 +98,7 @@ app.get('/search', async (req, res) => {
     }
 });
 
-// POST /orders - create a new order
+// POST /orders → save a new order
 app.post("/orders", async (req, res) => {
     try {
         const db = req.app.locals.db;
@@ -123,7 +129,7 @@ app.post("/orders", async (req, res) => {
     }
 });
 
-// PUT /lessons/:subject - update lesson spaces using subject
+// PUT /lessons/:subject → update a lesson using the subject name
 app.put("/lessons/:subject", async (req, res) => {
     try {
         const db = req.app.locals.db;
@@ -134,6 +140,7 @@ app.put("/lessons/:subject", async (req, res) => {
             return res.status(400).json({ error: "No update data provided" });
         }
 
+        // Update one lesson matching the subject
         const result = await db.collection("Lessons").updateOne(
             { subject: lessonSubject },
             { $set: updateData }
