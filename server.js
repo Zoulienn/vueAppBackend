@@ -105,13 +105,14 @@ app.get('/search', async (req, res) => {
     }
 });
 
+// POST /orders - create a new order
 app.post("/orders", async (req, res) => {
     try {
         const db = req.app.locals.db;
-        const { name, phone, lessonIDs, spaces, items } = req.body;
+        const { name, phone, lessonSubjects, spaces, items } = req.body;
 
         // Basic validation
-        if (!name || !phone || !Array.isArray(lessonIDs) || lessonIDs.length === 0) {
+        if (!name || !phone || !Array.isArray(lessonSubjects) || lessonSubjects.length === 0) {
             return res.status(400).json({ error: "Invalid order data" });
         }
 
@@ -119,7 +120,7 @@ app.post("/orders", async (req, res) => {
         const result = await db.collection("Orders").insertOne({
             name,
             phone,
-            lessonIDs,
+            lessonSubjects,
             spaces,
             items,
             createdAt: new Date(),
@@ -135,6 +136,7 @@ app.post("/orders", async (req, res) => {
     }
 });
 
+// PUT /lessons/:subject - update lesson spaces using subject
 app.put("/lessons/:subject", async (req, res) => {
     try {
         const db = req.app.locals.db;
@@ -163,6 +165,7 @@ app.put("/lessons/:subject", async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 });
+
 
 // Start server after DB connection
 async function startServer() {
