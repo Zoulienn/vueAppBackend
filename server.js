@@ -51,19 +51,6 @@ app.use(imageCheckMiddleware);
 app.use("/images", express.static(path.join(__dirname, "images")));
 
 // Routes
-// Serve lesson images safely
-app.get("/images/:filename", (req, res) => {
-    const filePath = path.join(__dirname, "images", req.params.filename);
-
-    fs.access(filePath, fs.constants.F_OK, (err) => {
-        if (err) {
-            console.error(`Image not found: ${req.params.filename}`);
-            return res.status(404).json({ error: "Image not found" });
-        }
-        res.sendFile(filePath);
-    });
-});
-
 app.get("/lessons", async (req, res) => {
     try {
         const db = req.app.locals.db;
