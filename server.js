@@ -27,8 +27,30 @@ app.use((req, res, next) => {
     next();
 });
 
-// Routes
+// Image existence check middleware
+const imageCheckMiddleware = (req, res, next) => {
+    if (!req.path.startsWith("/images/")) {
+        return next();
+    }
 
+    const filename = req.path.replace("/images/", "");
+    const filePath = path.join(__dirname, "images", filename);
+
+    fs.access(filePath, fs.constants.F_OK, (err) => {
+        if (err) {
+            console.error(`Image not found: ${filename}`);
+            return res.status(404).json({ error: "Image not found" });
+        }
+
+        // File exists → continue to static file handler
+        next();
+    });
+};
+
+app.use(imageCheckMiddleware);
+app.use("/images", express.static(path.join(__dirname, "images")));
+
+// Routes
 // Serve lesson images safely
 app.get("/images/:filename", (req, res) => {
     const filePath = path.join(__dirname, "images", req.params.filename);
